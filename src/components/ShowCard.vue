@@ -84,20 +84,20 @@
       </div>
       <!-- END CARD ROW FOR SMALL SCREENS   -->
       <!-- BEGIN STATS ROW FOR SMALL SCREENS -->
-      <div class="text-center centered-div row stat-row">
-          <div class="col">
+      <div class="d-flex flex-row text-center centered-div stat-row">
+          <div class="p-0">
             <h1>{{ drinks }}</h1>
             <p>SIPS</p>
           </div>
-          <div class="col">
+          <div class="p-0">
             <h1>{{ sculls }}</h1>
             <p>SCULLS</p>
           </div>
-          <div class="col">
+          <div class="p-0">
             <h1>{{ cardsLeft }}</h1>
             <p>CARDS</p>
           </div>
-          <div class="col">
+          <div class="p-0">
             <h1>{{ deck }}</h1>
             <p>DECK</p>
           </div>
@@ -156,8 +156,12 @@
     methods: {
       startGame(){
         this.disabled = true;
+        this.cardsLeft = 52;
         this.counter = 0;
         this.stage = 1;
+        this.drinks = 0;
+        this.sculls = 0;
+        this.deck = 1;
         this.revealOne = false;
         this.revealTwo = false;
         this.revealThree = false;
@@ -176,9 +180,8 @@
       },
       wrongAnswer(){
         this.stage = 0;
-        this.message = "wrong";
-        this.drinks++;
         this.disabled = true;
+        this.drinks++;
         var vm = this;
         setTimeout(function(){
           vm.stage = 1
@@ -201,6 +204,7 @@
           this.stage++;
           this.message = "correct";
         } else {
+          this.message = "wrong";
           this.wrongAnswer();
         }
       },
@@ -212,6 +216,7 @@
           this.stage++;
           this.message = "correct";
         } else {
+          this.message = "wrong";
           this.wrongAnswer();
         }
       },
@@ -222,7 +227,12 @@
         if(this.cardsInPlay[1].rank > this.cardsInPlay[0].rank){
           this.stage++;
           this.message = "correct";
+        } else if(this.cardsInPlay[1].rank === this.cardsInPlay[0].rank) {
+          this.message = "SCULL"
+          this.sculls++;
+          this.wrongAnswer();
         } else {
+          this.message = "wrong";
           this.wrongAnswer();
         }
       },
@@ -233,7 +243,12 @@
         if(this.cardsInPlay[1].rank < this.cardsInPlay[0].rank){
           this.stage++;
           this.message = "correct";
+        } else if(this.cardsInPlay[1].rank === this.cardsInPlay[0].rank) {
+          this.message = "SCULL"
+          this.sculls++;
+          this.wrongAnswer();
         } else {
+          this.message = "wrong";
           this.wrongAnswer();
         }
       },
@@ -246,7 +261,12 @@
         if(this.cardsInPlay[2].rank > lowCard && this.cardsInPlay[2].rank < highCard){
           this.stage++;
           this.message = "correct";
+        } else if(this.cardsInPlay[2].rank === lowCard || this.cardsInPlay[2].rank === highCard) {
+          this.message = "SCULL"
+          this.sculls++;
+          this.wrongAnswer();
         } else {
+          this.message = "wrong";
           this.wrongAnswer();
         }
       },
@@ -259,7 +279,12 @@
         if(this.cardsInPlay[2].rank < lowCard || this.cardsInPlay[2].rank > highCard){
           this.stage++;
           this.message = "correct";
+        } else if(this.cardsInPlay[2].rank === lowCard || this.cardsInPlay[2].rank === highCard) {
+          this.message = "SCULL"
+          this.sculls++;
+          this.wrongAnswer();
         } else {
+          this.message = "wrong";
           this.wrongAnswer();
         }
       },
@@ -272,8 +297,8 @@
             this.stage++;
             this.message = "correct";
           } else {
+            this.message = "wrong";
             this.wrongAnswer();
-            this.sculls++;
           }
         } else if(this.stage === 3){
           this.revealThree = true;
@@ -301,7 +326,7 @@
   .menu-icon {
     position: absolute;
     top: 1.3rem;
-    left: 1.3rem;
+    right: 1.3rem;
     color: #343a40
   }
 
@@ -374,7 +399,7 @@
   .full-page {
     height: 20vh;
     position: absolute;
-    margin: 22vh auto;
+    margin: 21vh auto;
     left: 0;
     right: 0;
     text-align: center;
@@ -422,7 +447,7 @@
     position: absolute;
     background-color: rgba(0, 0, 0, 0.94);
     color: white;
-    left: 0;
+    right: 0;
     top: 0;
     height: 100%;
     transition: 0.1s;
@@ -472,8 +497,8 @@
 
     .card-row img {
       display: inline;
-      width: 54%;
-      margin-right: -33%;
+      width: 40%;
+      margin-right: -12%;
       padding: 0;
       border-radius: 11px;
       transition: 0.2s;
@@ -522,6 +547,14 @@
     .stat-box {
       width: 20%;
       height: auto;
+    }
+
+    .stat-row h1 {
+      font-size: 1.8rem;
+    }
+
+    .p-0 {
+      width: 25%;
     }
   }
 
