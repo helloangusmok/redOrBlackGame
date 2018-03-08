@@ -1,6 +1,6 @@
-# vue-solitaire
+# redOrBlackGame
 
-> A Vue.js project
+> A Vue.js web app based on the infamous Red or Black card game.
 
 ## Build Setup
 
